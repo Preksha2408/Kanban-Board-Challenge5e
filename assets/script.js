@@ -4,6 +4,8 @@ const taskNameInputEl = $("#task-name-input");
 const taskDateInputEl = $("#task-Due-Date");
 const taskTypeInputEl = $("#task-description");
 
+// Retrieve tasks and nextId from localStorage
+
 function readTasksFromStorage() {
     let taskList = JSON.parse(localStorage.getItem("taskList"));
     if (!taskList) {
@@ -12,9 +14,13 @@ function readTasksFromStorage() {
     return taskList;
 }
 
+//Created a function that accepts an array of projects, stringifys them, and saves them in localStorage.
+
 function saveTasksToStorage(taskList) {
     localStorage.setItem("taskList", JSON.stringify(taskList));
 }
+
+// created a function to generate a unique task id
 
 function generateTaskId(event) {
     event.preventDefault();
@@ -36,6 +42,8 @@ function generateTaskId(event) {
     taskTypeInputEl.val("");
     taskDateInputEl.val("");
 }
+
+// created a function to create a task card
 
 function createTaskCard(task) {
     const newTaskCard = $("<div>");
@@ -73,6 +81,7 @@ function createTaskCard(task) {
     return newTaskCard;
 }
 
+//created a function to render the task list and make cards draggable
 function renderTaskList() {
     const taskList = readTasksFromStorage();
     const todoList = $("#todo-cards");
@@ -106,6 +115,7 @@ function renderTaskList() {
     });
 }
 
+//created a function to handle deleting a task
 function handleDeleteTask(event) {
     const taskId = $(this).attr("data-task-id");
     const taskList = readTasksFromStorage();
@@ -117,6 +127,8 @@ function handleDeleteTask(event) {
     saveTasksToStorage(taskList);
     renderTaskList();
 }
+
+//create a function to handle dropping a task into a new status lane
 
 function handleDrop(event, ui) {
     const taskList = readTasksFromStorage();
@@ -133,6 +145,8 @@ function handleDrop(event, ui) {
 
 taskFormEl.on("submit", generateTaskId);
 taskDisplayEl.on("click", ".delete", handleDeleteTask);
+
+//when the page loads, render's the task list, add's event listeners, make lanes droppable, and make the due date field a date picker
 
 $(document).ready(function () {
     $("#task-Due-Date").datepicker({
